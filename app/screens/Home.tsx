@@ -26,6 +26,7 @@ const HomeScreen = () => {
     }
   }, [data])
 
+
   return (
     <Layout>
       <Search searchInput={searchInput} setSearchInput={setSearchInput} />
@@ -83,7 +84,6 @@ const styles = StyleSheet.create({
   },
   newsImage: {
     borderRadius: 10,
-    maxWidth: 300,
   },
   newsContent: {
     marginHorizontal: 15,

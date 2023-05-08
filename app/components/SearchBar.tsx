@@ -5,7 +5,7 @@ import { SearchBar } from '@rneui/themed'
 const Search = ({ searchInput, setSearchInput }: SearchProps) => {
   return (
     <SearchBar
-      placeholder='Searching...'
+      placeholder='Search in...'
       platform='ios'
       returnKeyType='search'
       showLoading={false}
@@ -13,6 +13,7 @@ const Search = ({ searchInput, setSearchInput }: SearchProps) => {
       value={searchInput}
       onChangeText={setSearchInput}
       containerStyle={styles.searchBar}
+      onEndEditing={() => alert(searchInput)}
     />
   )
 }
