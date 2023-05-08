@@ -15,20 +15,20 @@ export interface ApiProps {
 }
 
 export interface HeadlinesProps {
-  articles: {
-    source: {
-      name: string
-    },
-    title: string,
-    description?: string,
-    url?: string,
-    urlToImage: string,
-    publishedAt: string,
-    content: string
-  }[]
+  source: {
+    name: string
+  },
+  title: string,
+  description?: string,
+  url?: string,
+  urlToImage: string,
+  publishedAt: string,
+  content: string
+
 }
 
 export type SearchProps = {
-  searchInput: string;
-  setSearchInput: React.Dispatch<React.SetStateAction<string>>;
+  searchInput: string
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>
+  setHeadlines: any
 }

@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, VirtualizedList, RefreshControl } from 'react-native'
 import { Card, Button, Text } from '@rneui/themed'
 import Layout from '@Components/layout'
 import { global } from '@Styles/global'
@@ -9,62 +9,87 @@ import { API } from '@Api'
 import { HeadlinesProps } from '@Types/Props'
 import dayjs from 'dayjs'
 import Search from '@Components/SearchBar'
+import uuid from 'react-native-uuid'
 
 const HomeScreen = () => {
   const [searchInput, setSearchInput] = useState('')
+  const [pages, setPages] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
   const { data, mutate } = useApi({
-    URL: API.GET_HEADLINES('en'),
+    URL: API.GET_HEADLINES('en', pages, 10),
     options: {
       method: 'GET'
     }
   })
-  const [headlines, setHeadlines] = useState<HeadlinesProps>()
+
+  const [headlines, setHeadlines] = useState<HeadlinesProps[]>([])
 
   useEffect(() => {
     if (data) {
-      setHeadlines(data)
+      setHeadlines(prevHeadlines => [...prevHeadlines, ...data.articles])
     }
-  }, [data])
+  }, [data, pages])
+
+  const handleRefresh = async () => {
+    try {
+      setIsLoading(true)
+      setPages(1)
+    } catch (error) {
+      console.log(error)
+    }
+    setIsLoading(false)
+  }
+
+  const handleEndReached = () => (
+    setPages(prevPages => prevPages + 1)
+  )
 
 
   return (
     <Layout>
-      <Search searchInput={searchInput} setSearchInput={setSearchInput} />
-      <ScrollView>
-        <Text style={global.title}>Headlines</Text>
-        {
-          headlines &&
-          headlines.articles.map((news, index) => (
-            <Card key={index} containerStyle={styles.newsItems}>
-              <Card.Title style={styles.newsTitle}>{news.source.name}</Card.Title>
-              <Card.FeaturedSubtitle style={styles.newsTime}>
-                <Text>
-                  {dayjs(news.publishedAt).format('YYYY-MM-DD HH:mm dddd')}
-                </Text>
-              </Card.FeaturedSubtitle>
-              <Card.Title>{news.title}</Card.Title>
-              <Card.Divider />
-              <Card.Image
-                style={styles.newsImage}
-                source={{
-                  uri: `${news.urlToImage ? news.urlToImage : 'https://fakeimg.pl/300x200/CCC'}`
-                }}
-              />
-              <Text style={styles.newsContent} numberOfLines={2}>
-                {news.content}
-              </Text>
-              <Button
-                icon={Icons.MoreIcon(20, '#fff')}
-                title='MORE'
-                titleStyle={{ fontWeight: '700' }}
-                loading={false}
-                buttonStyle={styles.moreButton}
-              />
-            </Card>
-          ))
+      <Search searchInput={searchInput} setSearchInput={setSearchInput} setHeadlines={setHeadlines} />
+      <Text style={global.title}>Headlines</Text>
+      <VirtualizedList
+        keyExtractor={() => uuid.v4()?.toString()}
+        data={headlines}
+        showsVerticalScrollIndicator={true}
+        onEndReachedThreshold={0.5}
+        onEndReached={handleEndReached}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} tintColor='#252525' />
         }
-      </ScrollView>
-    </Layout>
+        getItemCount={() => headlines.length}
+        getItem={(data, index) => data[index]}
+        renderItem={({ item: news }) => (
+          <Card containerStyle={styles.newsItems}>
+            <Card.Title style={styles.newsTitle}>{news.source.name}</Card.Title>
+            <Card.FeaturedSubtitle style={styles.newsTime}>
+              <Text>
+                {dayjs(news.publishedAt).format('YYYY-MM-DD HH:mm dddd')}
+              </Text>
+            </Card.FeaturedSubtitle>
+            <Card.Title>{news.title}</Card.Title>
+            <Card.Divider />
+            <Card.Image
+              style={styles.newsImage}
+              source={{
+                uri: `${news.urlToImage ? news.urlToImage : 'https://fakeimg.pl/300x200/CCC'}`
+              }}
+            />
+            <Text style={styles.newsContent} numberOfLines={2}>
+              {news.content}
+            </Text>
+            <Button
+              icon={Icons.MoreIcon(20, '#fff')}
+              title='MORE'
+              titleStyle={{ fontWeight: '700' }}
+              loading={false}
+              buttonStyle={styles.moreButton}
+            />
+          </Card>
+        )}
+      />
+    </Layout >
   )
 }
 

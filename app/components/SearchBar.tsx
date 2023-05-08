@@ -1,8 +1,22 @@
 import { SearchProps } from '@Types/Props'
 import { StyleSheet } from 'react-native'
 import { SearchBar } from '@rneui/themed'
+import useApi from '@Hooks/useApi'
+import { API } from '@Api'
 
-const Search = ({ searchInput, setSearchInput }: SearchProps) => {
+const Search = ({ searchInput, setSearchInput, setHeadlines }: SearchProps) => {
+  const { data, mutate } = useApi({
+    URL: API.SEARCH_IN(searchInput),
+    options: {
+      method: 'GET'
+    }
+  })
+
+  const handleSearch = () => (
+    // setHeadlines([...data.articles])
+    console.log(searchInput)
+  )
+
   return (
     <SearchBar
       placeholder='Search in...'
@@ -13,7 +27,7 @@ const Search = ({ searchInput, setSearchInput }: SearchProps) => {
       value={searchInput}
       onChangeText={setSearchInput}
       containerStyle={styles.searchBar}
-      onEndEditing={() => alert(searchInput)}
+      onEndEditing={handleSearch}
     />
   )
 }
