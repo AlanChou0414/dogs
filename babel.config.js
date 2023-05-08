@@ -19,7 +19,8 @@ module.exports = function (api) {
           "@Types": "./app/types",
           "@Api": "./app/constants/api",
           "@Path": "./app/constants/path",
-          "@Screens": "./app/screens"
+          "@Screens": "./app/screens",
+          "@Navigation": "./app/navigation"
         },
         "extensions": [
           ".js",

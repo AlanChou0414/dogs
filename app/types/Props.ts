@@ -27,3 +27,8 @@ export interface HeadlinesProps {
     content: string
   }[]
 }
+
+export type SearchProps = {
+  searchInput: string;
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>;
+}
