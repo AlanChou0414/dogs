@@ -6,17 +6,19 @@ module.exports = function (api) {
       ["@babel/plugin-transform-flow-strip-types"],
       ["@babel/plugin-proposal-decorators", { "legacy": true }],
       ["@babel/plugin-proposal-class-properties", { "loose": true }],
-      // ["module:react-native-dotenv", {
-      //   "envName": "APP_ENV",
-      //   "moduleName": "@env",
-      //   "path": ".env",
-      // }],
+      ["module:react-native-dotenv", {
+        "envName": "APP_ENV",
+        "moduleName": "@env",
+        "path": ".env",
+      }],
       ["module-resolver", {
         "alias": {
           "@Components": "./app/components",
           "@Styles": "./app/styles",
           "@Hooks": "./app/hooks",
-          "@Types": ".app/types"
+          "@Types": "./app/types",
+          "@Api": "./app/constants/api",
+          "@Path": "./app/constants/path"
         },
         "extensions": [
           ".js",

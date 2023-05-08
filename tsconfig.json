@@ -16,6 +16,12 @@
       "@Types/*": [
         "app/types/*"
       ],
+      "@Api": [
+        "app/constants/api"
+      ],
+      "@Path": [
+        "app/constants/path"
+      ]
     }
   }
 }
