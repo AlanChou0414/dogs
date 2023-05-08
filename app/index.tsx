@@ -1,27 +1,26 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import Layout from '@Components/layout'
+import { global } from '@Styles/global'
+import { API } from '@Api'
 
 export default function RootApp() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <SafeAreaView>
-        <View style={styles.box}>
-          <Text>Dogs Images</Text>
-        </View>
-      </SafeAreaView>
-    </View>
+    <Layout>
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>Headlines</Text>
+
+      </ScrollView>
+    </Layout>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+
   },
-  box: {
-    width: '100%',
-    borderWidth: .5
+  title: {
+    fontSize: global.title,
+    textAlign: 'center',
+    textTransform: 'uppercase'
   }
 })
