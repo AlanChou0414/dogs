@@ -18,7 +18,8 @@ module.exports = function (api) {
           "@Hooks": "./app/hooks",
           "@Types": "./app/types",
           "@Api": "./app/constants/api",
-          "@Path": "./app/constants/path"
+          "@Path": "./app/constants/path",
+          "@Screens": "./app/screens"
         },
         "extensions": [
           ".js",
