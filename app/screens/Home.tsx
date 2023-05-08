@@ -1,5 +1,5 @@
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { SearchBar, Card, Button, Text } from '@rneui/themed'
+import { Card, Button, Text } from '@rneui/themed'
 import Layout from '@Components/layout'
 import { global } from '@Styles/global'
 import { useState, useEffect } from 'react'
@@ -8,6 +8,7 @@ import useApi from '@Hooks/useApi'
 import { API } from '@Api'
 import { HeadlinesProps } from '@Types/Props'
 import dayjs from 'dayjs'
+import Search from '@Components/SearchBar'
 
 const HomeScreen = () => {
   const [searchInput, setSearchInput] = useState('')
@@ -27,15 +28,7 @@ const HomeScreen = () => {
 
   return (
     <Layout>
-      <View style={styles.searchBar}>
-        <SearchBar
-          placeholder='Searching...'
-          platform='ios'
-          cancelButtonProps={styles.searchBarText}
-          value={searchInput}
-          onChangeText={setSearchInput}
-        />
-      </View>
+      <Search searchInput={searchInput} setSearchInput={setSearchInput} />
       <ScrollView>
         <Text style={global.title}>Headlines</Text>
         {
@@ -69,7 +62,6 @@ const HomeScreen = () => {
             </Card>
           ))
         }
-
       </ScrollView>
     </Layout>
   )
@@ -78,12 +70,6 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-  searchBar: {
-    marginTop: 50,
-  },
-  searchBarText: {
-    color: ''
-  },
   newsItems: {
     borderRadius: 20,
     marginVertical: 20

@@ -24,6 +24,9 @@
       ],
       "@Screens/*": [
         "app/screens/*"
+      ],
+      "@Navigation/*": [
+        "app/navigation/*"
       ]
     }
   }
