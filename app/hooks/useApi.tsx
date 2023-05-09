@@ -4,7 +4,7 @@ import { API_KEY } from '@env'
 import { ApiProps } from '@Types/Props'
 
 const useApi = ({ URL, options }: ApiProps) => {
-  const { data, mutate } = useSWR(URL, async (URL) => {
+  const { data, isLoading, mutate } = useSWR(URL, async (URL) => {
     const response = await axios(URL, {
       headers: {
         'X-Api-Key': API_KEY
@@ -14,7 +14,7 @@ const useApi = ({ URL, options }: ApiProps) => {
     })
     return response.data
   })
-  return { data, mutate }
+  return { data, isLoading, mutate }
 }
 
 export default useApi
