@@ -32,3 +32,7 @@ export type SearchProps = {
   setSearchInput: React.Dispatch<React.SetStateAction<string>>
   setHeadlines: any
 }
+
+export interface PlaceHolderProps {
+  rows: number
+}

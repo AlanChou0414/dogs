@@ -5,7 +5,7 @@ import useApi from '@Hooks/useApi'
 import { API } from '@Api'
 
 const Search = ({ searchInput, setSearchInput, setHeadlines }: SearchProps) => {
-  const { data, mutate } = useApi({
+  const { data, isLoading, mutate } = useApi({
     URL: API.SEARCH_IN(searchInput),
     options: {
       method: 'GET'
@@ -22,7 +22,7 @@ const Search = ({ searchInput, setSearchInput, setHeadlines }: SearchProps) => {
       placeholder='Search in...'
       platform='ios'
       returnKeyType='search'
-      showLoading={false}
+      showLoading={isLoading}
       cancelButtonProps={styles.searchBarText}
       value={searchInput}
       onChangeText={setSearchInput}

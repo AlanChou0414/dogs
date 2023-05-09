@@ -4,24 +4,38 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { StyleSheet } from 'react-native'
 
 import HomeScreen from '@Screens/Home'
+import { SettingStack } from '@Navigation/StackNavigation'
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigation = () => {
   return (
     <Tab.Navigator
+      initialRouteName={PATH.home}
       screenOptions={{
-        tabBarStyle: styles.tabBarStyle
+        tabBarStyle: styles.tabBarStyle,
+        tabBarActiveTintColor: '#252525'
       }}
     >
       <Tab.Screen
+        name={PATH.home}
+        component={HomeScreen}
         options={{
           headerShown: false,
-          tabBarIcon: () => Icons.HomeIcon(35),
+          tabBarIcon: ({ color }) => Icons.HomeIcon(30, color),
+          tabBarLabelStyle: styles.tabBarTitle,
+        }}
+      />
+      <Tab.Screen
+        name={PATH.setting}
+        component={SettingStack}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => Icons.SettingIcon(30, color),
+          tabBarLabel:'settings',
           tabBarLabelStyle: styles.tabBarTitle
         }}
-        name={PATH.home}
-        component={HomeScreen} />
+      />
     </Tab.Navigator>
   )
 }
@@ -35,7 +49,6 @@ const styles = StyleSheet.create({
   tabBarTitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#252525',
     textTransform: 'uppercase'
   }
 })

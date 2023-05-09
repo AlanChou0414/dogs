@@ -1,3 +1,5 @@
 export const PATH = {
-  home: 'headlines'
+  home: 'headlines',
+  setting: 'settingStock',
+  settingPage:'setting'
 }
