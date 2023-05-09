@@ -24,13 +24,15 @@ export interface HeadlinesProps {
   urlToImage: string,
   publishedAt: string,
   content: string
+}
 
+export interface NewsArticleProps {
+  news: HeadlinesProps;
 }
 
 export type SearchProps = {
   searchInput: string
   setSearchInput: React.Dispatch<React.SetStateAction<string>>
-  setHeadlines: any
 }
 
 export interface PlaceHolderProps {
