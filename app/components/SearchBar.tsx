@@ -4,7 +4,7 @@ import { SearchBar } from '@rneui/themed'
 import useApi from '@Hooks/useApi'
 import { API } from '@Api'
 
-const Search = ({ searchInput, setSearchInput, setHeadlines }: SearchProps) => {
+const Search = ({ searchInput, setSearchInput }: SearchProps) => {
   const { data, isLoading, mutate } = useApi({
     URL: API.SEARCH_IN(searchInput),
     options: {
