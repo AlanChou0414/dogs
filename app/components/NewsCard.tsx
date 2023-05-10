@@ -3,41 +3,49 @@ import { Card, Button } from '@rneui/themed'
 import dayjs from 'dayjs'
 import { Icons } from '@Hooks/icon.hook'
 import { NewsArticleProps } from '@Types/Props'
+import React from 'react'
+import PlaceHolder from './PlaceHolder'
 
+const NewsArticle = React.memo(({ news, isLoading }: NewsArticleProps) => {
 
-
-const NewsArticle = ({ news }: NewsArticleProps) => {
   return (
-    <Card containerStyle={styles.newsItems}>
-      <Card.Title style={styles.newsTitle}>{news.source.name}</Card.Title>
-      <Card.FeaturedSubtitle style={styles.newsTime}>
-        <Text>
-          {dayjs(news.publishedAt).format('YYYY-MM-DD HH:mm dddd')}
-        </Text>
-      </Card.FeaturedSubtitle>
-      <Card.Title>{news.title}</Card.Title>
-      <Card.Divider />
-      <Card.Image
-        style={styles.newsImage}
-        source={{
-          uri: `${news.urlToImage ? news.urlToImage : 'https://fakeimg.pl/300x200/CCC'}`,
-          cache: 'force-cache',
-        }}
-        resizeMode='cover'
-      />
-      <Text style={styles.newsContent} numberOfLines={2}>
-        {news.content}
-      </Text>
-      <Button
-        icon={Icons.MoreIcon(20, '#fff')}
-        title='MORE'
-        titleStyle={{ fontWeight: '700' }}
-        loading={false}
-        buttonStyle={styles.moreButton}
-      />
-    </Card>
+    <>
+      {
+        isLoading
+          ? <PlaceHolder rows={3} />
+          :
+          <Card containerStyle={styles.newsItems} wrapperStyle={styles.newsInner}>
+            <Card.Title style={styles.newsTitle}>{news.source.name}</Card.Title>
+            <Card.FeaturedSubtitle style={styles.newsTime}>
+              <Text>
+                {dayjs(news.publishedAt).format('YYYY-MM-DD HH:mm dddd')}
+              </Text>
+            </Card.FeaturedSubtitle>
+            <Card.Title>{news.title}</Card.Title>
+            <Card.Divider />
+            <Card.Image
+              style={styles.newsImage}
+              source={{
+                uri: `${news.urlToImage ? news.urlToImage : 'https://fakeimg.pl/300x200/CCC'}`,
+                cache: 'force-cache',
+              }}
+              resizeMode='cover'
+            />
+            <Text style={styles.newsContent} numberOfLines={2}>
+              {news.content}
+            </Text>
+            <Button
+              icon={Icons.MoreIcon(20, '#fff')}
+              title='MORE'
+              titleStyle={{ fontWeight: '700' }}
+              loading={false}
+              buttonStyle={styles.moreButton}
+            />
+          </Card>
+      }
+    </>
   )
-}
+})
 
 export default NewsArticle
 
@@ -45,7 +53,10 @@ export default NewsArticle
 const styles = StyleSheet.create({
   newsItems: {
     borderRadius: 20,
-    marginVertical: 20
+    marginTop: 20
+  },
+  newsInner: {
+
   },
   newsTitle: {
     fontSize: 28,

@@ -27,7 +27,8 @@ export interface HeadlinesProps {
 }
 
 export interface NewsArticleProps {
-  news: HeadlinesProps;
+  news: HeadlinesProps
+  isLoading: boolean
 }
 
 export type SearchProps = {

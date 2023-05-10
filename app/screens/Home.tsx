@@ -2,30 +2,36 @@ import { FlatList, RefreshControl } from 'react-native'
 import { Text } from '@rneui/themed'
 import Layout from '@Components/layout'
 import { global } from '@Styles/global'
-import { useState } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import useApi from '@Hooks/useApi'
 import { API } from '@Api'
 import Search from '@Components/SearchBar'
 import uuid from 'react-native-uuid'
 import PlaceHolder from '@Components/PlaceHolder'
-import NewsCard from '@Components/NewsCard'
-import axios from 'axios'
-import { API_KEY } from '@env'
+import { HeadlinesProps } from '@Types/Props'
+
+const NewsCard = lazy(() => import('@Components/NewsCard'))
 
 const HomeScreen = () => {
   const [searchInput, setSearchInput] = useState('')
   const [pages, setPages] = useState(1)
   const { data, isLoading, mutate } = useApi({
-    URL: API.GET_HEADLINES('en', 1, 10),
+    URL: API.GET_HEADLINES('en', pages, 5),
     options: {
       method: 'GET'
     }
   })
+  const [newsList, setNewsList] = useState<HeadlinesProps[]>([])
+
+  useEffect(() => {
+    if (data && data.articles) {
+      setNewsList(prevNewsList => [...prevNewsList, ...data.articles])
+    }
+  }, [data])
 
   const handleRefresh = async () => {
     try {
-      setPages(1)
-      mutate()
+      await mutate()
     } catch (error) {
       console.log(error)
     }
@@ -34,14 +40,9 @@ const HomeScreen = () => {
   const handleEndReached = async () => {
     setPages(prevPages => prevPages + 1)
     try {
-      const response = await axios(API.GET_HEADLINES('en', pages, 10), {
-        method: 'GET',
-        headers: { 'X-Api-Key': API_KEY }
-      })
-      const newData = await response.data
-      console.log(newData)
-      // const [articles] = newData
-      // mutate([...data?.articles, ...newData], false)
+      const newRequest = API.GET_HEADLINES('en', pages + 1, 5)
+      const newData = await mutate(newRequest, true)
+      setNewsList(prevNewsList => [...prevNewsList, ...newData.articles])
     } catch (error) {
       console.log(error)
     }
@@ -51,21 +52,22 @@ const HomeScreen = () => {
     <Layout>
       <Search searchInput={searchInput} setSearchInput={setSearchInput} />
       <Text style={global.title}>Headlines</Text>
-      {
-        <FlatList
-          keyExtractor={() => uuid.v4()?.toString()}
-          showsVerticalScrollIndicator={false}
-          onEndReachedThreshold={0.5}
-          onEndReached={handleEndReached}
-          data={data?.articles}
-          refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} tintColor='#252525' />
-          }
-          renderItem={({ item: news }) => (
-            <NewsCard news={news} />
-          )}
-        />
-      }
+      <FlatList
+        keyExtractor={() => uuid.v4()?.toString()}
+        showsVerticalScrollIndicator={false}
+        onEndReachedThreshold={0.5}
+        initialNumToRender={5}
+        onEndReached={handleEndReached}
+        data={newsList}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} tintColor='#252525' />
+        }
+        renderItem={({ item: news }) => (
+          <Suspense fallback={<PlaceHolder rows={1} />}>
+            <NewsCard news={news} isLoading={isLoading} />
+          </Suspense>
+        )}
+      />
     </Layout >
   )
 }

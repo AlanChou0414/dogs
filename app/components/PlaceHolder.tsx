@@ -8,11 +8,9 @@ const PlaceHolder = ({ rows }: PlaceHolderProps) => {
       {
         Array.from({ length: rows }).map((item, index) => (
           <View key={index} style={styles.container}>
-            <Skeleton animation='pulse' style={styles.skeletonTitle} width={300} height={30} />
-            <Skeleton animation='pulse' style={styles.skeletonImg} width={300} height={200} />
-            <Skeleton animation='pulse' style={styles.skeletonText} width={300} height={10} />
-            <Skeleton animation='pulse' style={styles.skeletonText} width={300} height={10} />
-            <Skeleton animation='pulse' style={styles.skeletonButton} width={300} height={35} />
+            <Skeleton animation='pulse' style={styles.skeletonImg} width={350} height={250} />
+            <Skeleton animation='pulse' style={styles.skeletonText} width={350} height={15} />
+            <Skeleton animation='pulse' style={styles.skeletonText} width={350} height={15} />
           </View>
         ))
       }
@@ -27,22 +25,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 20
   },
-  skeletonTitle: {
-    backgroundColor: '#e3e3e3',
-    marginVertical: 5,
-  },
   skeletonImg: {
     backgroundColor: '#e3e3e3',
-    marginVertical: 5,
+    marginVertical: 3,
     borderRadius: 10
   },
   skeletonText: {
     backgroundColor: '#e3e3e3',
-    marginTop: 5
-  },
-  skeletonButton: {
-    backgroundColor: '#e3e3e3',
-    marginTop: 10,
-    borderRadius: 10
+    marginVertical: 5,
   }
 })
